@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170120071056) do
+ActiveRecord::Schema.define(version: 20170121064805) do
 
   create_table "lunch_orders", force: :cascade do |t|
+    t.integer  "normal"
+    t.integer  "vegetarian"
+    t.integer  "nut_free"
+    t.integer  "gluten_free"
+    t.integer  "fish_free"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "restaurants", force: :cascade do |t|
+    t.integer  "rating"
     t.integer  "normal"
     t.integer  "vegetarian"
     t.integer  "nut_free"
