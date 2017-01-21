@@ -1,0 +1,32 @@
+<p>New lunchorder</p>
+
+<%= form_for :lunchorder, url: lunchorders_path do |f| %>
+  <p>
+    <%= f.label :normal %><br>
+    <%= f.text_field :normal %>
+  </p>
+ 
+  <p>
+    <%= f.label :vegetarian %><br>
+    <%= f.text_field :vegetarian %>
+  </p>
+
+  <p>
+    <%= f.label :gluten_free %><br>
+    <%= f.text_field :gluten_free %>
+  </p>
+
+  <p>
+    <%= f.label :nut_free %><br>
+    <%= f.text_field :nut_free %>
+  </p>
+
+  <p>
+    <%= f.label :fish_free %><br>
+    <%= f.text_field :fish_free %>
+  </p>
+ 
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>
