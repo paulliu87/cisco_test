@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20170121064805) do
   end
 
   create_table "restaurants", force: :cascade do |t|
+    t.string   "name"
     t.integer  "rating"
     t.integer  "normal"
     t.integer  "vegetarian"

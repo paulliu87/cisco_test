@@ -15,11 +15,12 @@ class RestaurantsController < ApplicationController
 
 	private
 		def restaurant_params
-			params.require(:restaurant).permit( :normal, :vegetarian, :gluten_free, :nut_free, :fish_free)
+			params.require(:restaurant).permit( :name, :rating, :normal, :vegetarian, :gluten_free, :nut_free, :fish_free)
 		end
 
 		def convert_string_to_integer(params)
 			{
+				:rating => params[:rating].to_i,
 				:normal => params[:normal].to_i,
 				:vegetarian => params[:vegetarian].to_i,
 				:nut_free => params[:nut_free].to_i,

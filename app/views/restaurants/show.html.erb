@@ -1,5 +1,10 @@
 
 <p>
+	<strong>name:</strong>
+	<%= @restaurant.name %>
+</p>
+
+<p>
 	<strong>rating:</strong>
 	<%= @restaurant.rating %>
 </p>
@@ -29,3 +34,4 @@
 	<%= @restaurant.fish_free %>
 </p>
 
+<a href="/restaurants/#{params[:id]}/placeorder">Place Order</a>	
