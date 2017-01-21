@@ -6,7 +6,7 @@ RSpec.describe LunchordersController, type: :controller do
 
 	describe 'show' do
 
-		it 'assigns the right timeslot' do
+		it 'assigns the right lunchorder' do
 			get :show, params: {id: demo_lunchorder.id}
 			expect(assigns(:lunchorder)).to eq(demo_lunchorder)
 		end
@@ -23,14 +23,15 @@ RSpec.describe LunchordersController, type: :controller do
 	describe 'create' do
 		context "when valid params are passed" do
 			before(:each) do
-				post :create, params: {lunchorder: {normal: 10}}
+				lunchorder = LunchOrder.new(:normal => 10)
+				post :create, lunchorder: lunchorder.attributes.except("id")
 			end
 			it "responds with status code 302" do
 				expect(response).to have_http_status(302)
 			end
 
-			xit "redirects to the created lunchorder show page" do
-				expect(response).to redirect_to(lunchorder_path)
+			it "redirects to the created lunchorder show page" do
+				expect(response).to redirect_to("/lunchorders/#{LunchOrder.last.id}")
 			end
 
 			it "creates a new lunchorder" do
