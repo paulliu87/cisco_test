@@ -20,6 +20,7 @@ class RestaurantsController < ApplicationController
 
 		def convert_string_to_integer(params)
 			{
+				:name => params[:name],
 				:rating => params[:rating].to_i,
 				:normal => params[:normal].to_i,
 				:vegetarian => params[:vegetarian].to_i,
