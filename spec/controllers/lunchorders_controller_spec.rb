@@ -41,4 +41,19 @@ RSpec.describe LunchordersController, type: :controller do
 			end
 		end
 	end
+
+	describe 'placeorder' do
+		context "when the restaurants have sufficient food, normal food only" do
+			before(:each) do
+				lunchorder = LunchOrder.new(:normal => 10)
+				post :create, lunchorder: lunchorder.attributes.except("id")
+			end
+
+			it "renders the placeorder page" do
+				get :placeorder
+				expect(response).to render_template(:order)
+			end
+		end
+	end
+
 end
