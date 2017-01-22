@@ -85,10 +85,12 @@ class LunchordersController < ApplicationController
 				hash_of_order[:rating] = Restaurant.find(restaurant_id).rating
 				if Restaurant.find(restaurant_id)[key] >= value
 					hash_of_order[key] = value 
-					Restaurant.find(restaurant_id)[key] = Restaurant.find(restaurant_id)[key] - value
+					# Restaurant.find(restaurant_id)[key] = Restaurant.find(restaurant_id)[key] - value
+					Restaurant.update(restaurant_id, key => (Restaurant.find(restaurant_id)[key] - value))
 				else
 					hash_of_order[key] = Restaurant.find(restaurant_id)[key]
-					Restaurant.find(restaurant_id)[key] = 0
+					# Restaurant.find(restaurant_id)[key] = 0
+					Restaurant.update(restaurant_id, key => 0)
 				end
 			end
 		end
