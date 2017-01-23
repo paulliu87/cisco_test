@@ -45,15 +45,20 @@ RSpec.describe LunchordersController, type: :controller do
 	describe 'placeorder' do
 		context "when the restaurants have sufficient food, normal food only" do
 			before(:each) do
-				lunchorder = LunchOrder.new(:normal => 10)
-				post :create, lunchorder: lunchorder.attributes.except("id")
+				@lunchorder = LunchOrder.create(:normal => 10)
+				@restaurant = Restaurant.create(:name => "Restaurant A", :rating => 5, :normal => 10)
+				post :create, lunchorder: @lunchorder.attributes.except("id")
 			end
 
 			it "renders the placeorder page" do
-				get :placeorder
-				expect(response).to render_template(:order)
+				get :placeorder, params: {lunchorder_id: @lunchorder.id}
+				expect(response).to render_template(:placeorder)
+			end
+
+			it "should change the stock of restaurant A" do
+				get :placeorder, params: {lunchorder_id: @lunchorder.id}
+				expect(Restaurant.find(@restaurant.id).normal).to eq(0)
 			end
 		end
 	end
-
 end
