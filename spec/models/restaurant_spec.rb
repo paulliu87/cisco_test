@@ -32,6 +32,16 @@ RSpec.describe Restaurant, type: :model do
     	Restaurant.create(name: "Restaurant Test", rating: 3, normal: 10)
     	expect(restaurant.save).to be false
     end
+
+    it 'does not allow rating to be more than 5' do
+    	restaurant[:rating] = 6
+    	expect(restaurant.save).to be false
+    end
+
+    it 'does not allow rating to be less than 0' do
+    	restaurant[:rating] = -1
+    	expect(restaurant.save).to be false
+    end
   end
 
   describe "at_least_one_meal" do
