@@ -1,0 +1,10 @@
+<% if @lunchorders != nil %>
+		<ul>
+			<% @lunchorders.each do |lunchorder| %>
+				<li>
+					<a href="/lunchorders/<%=lunchorder.id%>">Lunch Order #<%=lunchorder.id%></a>
+				</li>
+			<% end %>
+		</ul>
+<% end %>
+<a href="/lunchorders/new">Create a new lunchorder.</a>

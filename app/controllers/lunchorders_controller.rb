@@ -1,4 +1,8 @@
 class LunchordersController < ApplicationController
+	def index
+		@lunchorders = LunchOrder.all
+	end
+	
 	def show
 		@lunchorder = LunchOrder.find(params[:id])
 	end
