@@ -1,3 +1,7 @@
+/**{
+	border: red solid 1px;
+}*/
+
 @font-face {
 	font-family: 'codropsicons';
 	font-weight: normal;
@@ -178,7 +182,7 @@ a:focus {
 	position: relative;
 	padding: 3em 0;
 	top: 0;
-	left: 50%;
+	text-align: center;
 }
 
 .section {
@@ -345,6 +349,7 @@ a:focus {
 	padding: 10em 1em;
 	text-align: center;
 	background: #d94f5c;
+	float: left;
 }
 
 .content__wrap--related {
