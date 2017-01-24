@@ -38,6 +38,7 @@ class LunchordersController < ApplicationController
 
 	def placeorder
 		@orderlist = place_order(params[:lunchorder_id])
+		p @orderlist
      	if request.xhr?
      		render :layout => false
      	else
