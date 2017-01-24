@@ -66,7 +66,7 @@ class LunchordersController < ApplicationController
 	def place_order(id)
 		lunchorder = LunchOrder.find(id)
 		restaurants_list = rang_fit_restaurants(lunchorder) 
-		@orders_from_restaurants = call_restaurants(lunchorder,restaurants_list)
+		@orders_from_restaurants = filter_empty_slot(call_restaurants(lunchorder,restaurants_list))
 	end
 
 	def rang_fit_restaurants(lunchorder)
@@ -81,6 +81,7 @@ class LunchordersController < ApplicationController
 		five_to_one_star_restaurants.each do |array_of_restaurants|
 			restaurants_list << best_fit_food(array_of_restaurants,lunchorder)
 		end
+		p restaurants_list
 		restaurants_list.flatten
 	end
 
@@ -108,7 +109,7 @@ class LunchordersController < ApplicationController
 			temp_array << [score, restaurant]
 		end
 		restaurants_list = high_to_low_score(temp_array)
-		restaurants_list = filter_restaurants(restaurants_list)
+		restaurants_list = filter_integer(restaurants_list)
 	end
 
 	def score_restaurant(restaurant,lunchorder)
@@ -127,11 +128,16 @@ class LunchordersController < ApplicationController
 		array.sort_by { |a| a[0] }.reverse
 	end
 
-	def filter_restaurants(restaurants_list)
+	def filter_integer(restaurants_list)
 		restaurants_list.flatten.reject do |element|
 			element.class == Integer
 		end
+	end
 
+	def filter_empty_slot(restaurants_list)
+		restaurants_list.reject do |element|
+			element[:name] == nil
+		end
 	end
 
 	def restaurants_in_rating #gives the high to low base on rating and not empty stock
@@ -158,7 +164,11 @@ class LunchordersController < ApplicationController
 			:fish_free => lunchorder.fish_free,
 		}
 		array_of_restaurants.each do |restaurant|
+			p order
+			p called_restaurants
 			unless order_is_empty(order)
+				p "@@@@@@@@@@@@@@"
+				p restaurant.id
 				called_restaurants << order_from_a_restaurant(order,restaurant.id)
 				order = advance_order(order, called_restaurants.last)
 			end
