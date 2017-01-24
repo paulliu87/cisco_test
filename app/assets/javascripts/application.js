@@ -32,14 +32,4 @@ $(document).ready(function() {
       	$(".container").find('.content').append(response);
     })
   })
-
-    ajaxRequest.fail(function(jXHR){
-      console.log(jXHR);
-      var errors = JSON.parse(jXHR.responseText);
-      console.log(errors);
-      var titleMessage = errors.title[0];
-      console.log(titleMessage);
-      $('.error').find('.message').text(titleMessage);
-      $('.error').removeClass('hidden')
-    });
 })
