@@ -14,3 +14,31 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+$(document).ready(function() {
+  $('a').on('click',function(e) {
+    e.preventDefault();
+    console.log("this is clicked")
+    var that = this
+    var uri = $(this).attr("href")
+    var ajaxRequest = $.ajax({
+      url: uri,
+      method: 'GET'
+    })
+
+    ajaxRequest.done(function(response) {
+		$(".container").find('.content').empty();
+		console.log(response)
+      	$(".container").find('.content').append(response);
+    })
+  })
+
+    ajaxRequest.fail(function(jXHR){
+      console.log(jXHR);
+      var errors = JSON.parse(jXHR.responseText);
+      console.log(errors);
+      var titleMessage = errors.title[0];
+      console.log(titleMessage);
+      $('.error').find('.message').text(titleMessage);
+      $('.error').removeClass('hidden')
+    });
+})
