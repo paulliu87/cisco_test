@@ -1,24 +1,48 @@
 class LunchordersController < ApplicationController
 	def index
 		@lunchorders = LunchOrder.all
+     	if request.xhr?
+     		render :layout => false
+     	else
+     		render "index"
+     	end
 	end
 	
 	def show
 		@lunchorder = LunchOrder.find(params[:id])
+		if request.xhr?
+     		render :layout => false
+     	else
+     		render "show"
+     	end
 	end
 
 	def new
+	 	if request.xhr?
+     		render :layout => false
+     	else
+     		render "new"
+     	end
 	end
 
 	def create
 		convert_string_to_integer(lunchorder_params)
 		@lunchorder = LunchOrder.new(convert_string_to_integer(lunchorder_params))
 		@lunchorder.save
-		redirect_to "/lunchorders/#{@lunchorder.id}"
+     	if request.xhr?
+     		render :layout => false
+     	else
+			redirect_to "/lunchorders/#{@lunchorder.id}"
+     	end
 	end
 
 	def placeorder
 		@orderlist = place_order(params[:lunchorder_id])
+     	if request.xhr?
+     		render :layout => false
+     	else
+     		render "placeorder"
+     	end
 	end
 
 
