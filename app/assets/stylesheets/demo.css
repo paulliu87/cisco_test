@@ -175,7 +175,10 @@ a:focus {
 
 /* Content */
 .content {
+	position: relative;
 	padding: 3em 0;
+	top: 0;
+	left: 50%;
 }
 
 .section {
@@ -197,8 +200,8 @@ a:focus {
 .section--menu {
 	position: relative;
 	overflow: hidden;
-	min-height: 80vh;
-	padding: 2em 0 8em;
+	min-height: 10vh;
+	padding: 2em 0 0;
 }
 
 .break {

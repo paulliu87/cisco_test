@@ -19,13 +19,15 @@
 			<section class="section section--menu" id="Iris">
 				<nav class="menu menu--iris">
 					<ul class="menu__list">
-						<li class="menu__item menu__item--current"><a href="/restaurants" class="menu__link">Restaurant List</a></li>
-						<li class="menu__item"><a href="/lunchorders" class="menu__link">Lunch Order List</a></li>
+						<li class="menu__item menu__item--current"><a href="/restaurants" class="menu__link clickable">Restaurant List</a></li>
+						<li class="menu__item"><a href="/lunchorders" class="menu__link clickable">Lunch Order List</a></li>
 						<li class="menu__item"><a href="#" class="menu__link">Contact</a></li>
 					</ul>
 				</nav>
 			</section>
-			<%= yield %>
+			<div class="content">	
+				<%= yield %>
+			</div>
 		</div>
 		<!-- /container -->
 	    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
