@@ -38,6 +38,7 @@ class LunchordersController < ApplicationController
 
 	def placeorder
 		@orderlist = place_order(params[:lunchorder_id])
+		p @orderlist
      	if request.xhr?
      		render :layout => false
      	else
@@ -113,14 +114,18 @@ class LunchordersController < ApplicationController
 				hash_of_order[:rating] = Restaurant.find(restaurant_id).rating
 				if Restaurant.find(restaurant_id)[key] >= value
 					hash_of_order[key] = value 
-					# Restaurant.find(restaurant_id)[key] = Restaurant.find(restaurant_id)[key] - value
-					Restaurant.update(restaurant_id, key => (Restaurant.find(restaurant_id)[key] - value))
+					Restaurant.find(restaurant_id)[key] = Restaurant.find(restaurant_id)[key] - value
+					# Restaurant.update(restaurant_id, key => (Restaurant.find(restaurant_id)[key] - value))
 				else
 					hash_of_order[key] = Restaurant.find(restaurant_id)[key]
-					# Restaurant.find(restaurant_id)[key] = 0
-					Restaurant.update(restaurant_id, key => 0)
+					Restaurant.find(restaurant_id)[key] = 0
+					# Restaurant.update(restaurant_id, key => 0)
 				end
+			else
+				hash_of_order[key] = 0
 			end
+			p "key is #{key} and value is #{value}"
+			p hash_of_order
 		end
 		hash_of_order
 	end

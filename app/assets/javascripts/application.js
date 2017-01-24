@@ -27,6 +27,7 @@ $(document).ready(function() {
 
     ajaxRequest.done(function(response) {
 		$(".container").find('.content').empty();
+		console.log("This is triggered")
 		console.log(response)
       	$(".container").find('.content').append(response);
     })
