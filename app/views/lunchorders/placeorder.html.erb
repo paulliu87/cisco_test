@@ -1,11 +1,17 @@
-<% @orderlist.each do |hash| %>
-<p><%= hash[:name] %></p>
-<p><%= hash[:rating] %></p>
-<p><%= hash[:normal] %></p>
-<p><%= hash[:vegetarian] %></p>
-<p><%= hash[:nut_free] %></p>
-<p><%= hash[:gluten_free] %></p>
-<p><%= hash[:nut_free] %></p>
-<p><%= hash[:fish_free] %></p>
-
-<% end %>
+<ul class="two-column-display" >
+	<% @orderlist.each do |hash| %>
+			<p style="width:100%; text-align:left;"><%= hash[:name] %></p>
+			<li>Rating</li>
+			<li><%= hash[:rating] %></li>
+			<li>Vegetarian</li>
+			<li><%= hash[:vegetarian] %></li>
+			<li>Nut Free</li>
+			<li><%= hash[:nut_free] %></li>
+			<li>Gluten Free</li>
+			<li><%= hash[:gluten_free] %></li>
+			<li>Fish Free</li>
+			<li><%= hash[:fish_free] %></li>
+			<li>Others</li>
+			<li><%= hash[:normal] %></li>
+	<% end %>
+</ul>

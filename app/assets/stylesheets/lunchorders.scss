@@ -1,3 +1,19 @@
 // Place all the styles related to the lunchorders controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.two-column-display {
+	width: 760px;
+	margin-bottom: 20px;
+	overflow: hidden;
+}
+
+.two-column-display li {
+	float: left;
+	line-height: 1.5em;
+	float: left;
+	display:inline;
+	width: 50%;
+	text-align: left;
+}
