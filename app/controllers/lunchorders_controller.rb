@@ -64,21 +64,89 @@ class LunchordersController < ApplicationController
 	end
 
 	def place_order(id)
-		restaurants_in_rating 
 		lunchorder = LunchOrder.find(id)
-		@orders_from_restaurants = call_restaurants(lunchorder,restaurants_in_rating)
+		restaurants_list = rang_fit_restaurants(lunchorder) 
+		@orders_from_restaurants = call_restaurants(lunchorder,restaurants_list)
+	end
+
+	def rang_fit_restaurants(lunchorder)
+		restaurants = restaurants_in_rating
+		restaurants = remove_empty_restaurants(restaurants)
+		restaurants = provid_right_food(lunchorder,restaurants)
+	end
+
+	def provid_right_food(lunchorder,restaurants)
+		restaurants_list = []
+		five_to_one_star_restaurants = split_in_rating(restaurants)
+		five_to_one_star_restaurants.each do |array_of_restaurants|
+			restaurants_list << best_fit_food(array_of_restaurants,lunchorder)
+		end
+		restaurants_list.flatten
+	end
+
+	def split_in_rating(restaurants)
+		five_star_restaurants = []
+		four_star_restaurants = []
+		three_star_restaurants = []
+		two_star_restaurants = []
+		one_star_restaurants = []
+		zero_star_restaurants = []
+		restaurants_list = [five_star_restaurants,four_star_restaurants,three_star_restaurants,two_star_restaurants,one_star_restaurants,zero_star_restaurants]
+		
+		restaurants.each do |restaurant|
+			restaurants_list[ 5 - restaurant.rating ] << restaurant
+		end
+		
+		restaurants_list
+	end
+
+	def best_fit_food(array_of_restaurants,lunchorder)
+		temp_array = []
+		array_of_restaurants.each do |restaurant|
+			score = 0
+			score = score_restaurant(restaurant,lunchorder)
+			temp_array << [score, restaurant]
+		end
+		restaurants_list = high_to_low_score(temp_array)
+		restaurants_list = filter_restaurants(restaurants_list)
+	end
+
+	def score_restaurant(restaurant,lunchorder)
+		score = 0
+		[:normal,:vegetarian,:gluten_free,:nut_free,:fish_free].each do |key|
+			if (lunchorder[key] > restaurant[key]) && (restaurant[key] != 0)
+				score = score + 1
+			elsif (lunchorder[key] < restaurant[key]) && (lunchorder[key] != 0)
+				score = score + 2
+			end
+		end
+		score
+	end
+
+	def high_to_low_score(array)
+		array.sort_by { |a| a[0] }.reverse
+	end
+
+	def filter_restaurants(restaurants_list)
+		restaurants_list.flatten.reject do |element|
+			element.class == Integer
+		end
+
 	end
 
 	def restaurants_in_rating #gives the high to low base on rating and not empty stock
 		list_restaurants = Restaurant.order("rating DESC").to_a
-		list_restaurants.reject do |restaurant|
-				(restaurant.normal == 0 || restaurant.normal == nil )&&
-				(restaurant.vegetarian == 0 || restaurant.vegetarian == nil )&&
-				(restaurant.nut_free == 0 || restaurant.nut_free == nil )&& 
-				(restaurant.gluten_free == 0 || restaurant.gluten_free == nil )&&
-				(restaurant.fish_free == 0|| restaurant.fish_free == nil)
-		end
 	end
+
+	def remove_empty_restaurants(restaurants)
+		restaurants.reject do |restaurant|
+			(restaurant.normal == 0 || restaurant.normal == nil )&&
+			(restaurant.vegetarian == 0 || restaurant.vegetarian == nil )&&
+			(restaurant.nut_free == 0 || restaurant.nut_free == nil )&& 
+			(restaurant.gluten_free == 0 || restaurant.gluten_free == nil )&&
+			(restaurant.fish_free == 0|| restaurant.fish_free == nil)
+		end
+	end	
 
 	def call_restaurants(lunchorder,array_of_restaurants)
 		called_restaurants = []
@@ -92,7 +160,7 @@ class LunchordersController < ApplicationController
 		array_of_restaurants.each do |restaurant|
 			unless order_is_empty(order)
 				called_restaurants << order_from_a_restaurant(order,restaurant.id)
-				order = advance_order(order, restaurant.id)
+				order = advance_order(order, called_restaurants.last)
 			end
 		end
 		called_restaurants
@@ -109,7 +177,7 @@ class LunchordersController < ApplicationController
 	def order_from_a_restaurant(hash_of_meals, restaurant_id)
 		hash_of_order = {}
 		hash_of_meals.each do |key, value|
-			if (value != 0 && value != nil) && (Restaurant.find(restaurant_id)[key] != 0)
+			if value != 0  && (Restaurant.find(restaurant_id)[key] != 0)
 				hash_of_order[:name] = Restaurant.find(restaurant_id).name
 				hash_of_order[:rating] = Restaurant.find(restaurant_id).rating
 				if Restaurant.find(restaurant_id)[key] >= value
@@ -124,22 +192,14 @@ class LunchordersController < ApplicationController
 			else
 				hash_of_order[key] = 0
 			end
-			p "key is #{key} and value is #{value}"
-			p hash_of_order
 		end
 		hash_of_order
 	end
 
-	def advance_order(hash_of_meals, restaurant_id)
+	def advance_order(hash_of_meals, changes)
 		updated_order = {}
 		hash_of_meals.each do |key, value|
-			if (value != 0 && value != nil) && (Restaurant.find(restaurant_id)[key] != 0)
-				if Restaurant.find(restaurant_id)[key] <= value 
-					updated_order[key] = value - Restaurant.find(restaurant_id)[key]
-				else
-					updated_order[key] = 0 
-				end
-			end
+			updated_order[key] = hash_of_meals[key] - changes[key]
 		end
 		updated_order
 	end
