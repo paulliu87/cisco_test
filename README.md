@@ -79,6 +79,7 @@ To reset the database and seed it( only for testing)
 ```ruby
 
 rails db:drop
+rails db:migrate
 rails db:seed
 
 ```
